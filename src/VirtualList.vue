@@ -17,7 +17,7 @@ export default {
     // window.innerHeight || document.documentElement.clientHeight is the window viewport height
     // element.offsetTop is the element start position from top of window
 
-    // TODO: if data gets filtered or changed, need update the items as well
+    // TODif data gets filtered or changed, need update the items as well
     props: {
         data: {
             type: Array,
@@ -30,9 +30,8 @@ export default {
             type: Boolean,
             default: true
         }
-    }
-    
-    ['data', 'height', 'pageMode'],
+    },
+
     data() {
         return {
             viewportBegin: 0,
