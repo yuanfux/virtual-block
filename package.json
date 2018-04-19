@@ -11,6 +11,7 @@
   "license": "MIT",
   "devDependencies": {
     "babel-loader": "^7.1.4",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "css-loader": "^0.28.11",
     "html-loader": "^0.5.5",
