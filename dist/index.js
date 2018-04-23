@@ -1,2 +1,535 @@
-!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports["virtual-list"]=t():e["virtual-list"]=t()}(window,function(){return function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}return n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{configurable:!1,enumerable:!0,get:r})},n.r=function(e){Object.defineProperty(e,"__esModule",{value:!0})},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="/dist/",n(n.s=1)}([function(e,t,n){"use strict";function r(e,t){for(var n=[],r={},o=0;o<t.length;o++){var s=t[o],i=s[0],a={id:e+":"+o,css:s[1],media:s[2],sourceMap:s[3]};r[i]?r[i].parts.push(a):n.push(r[i]={id:i,parts:[a]})}return n}n.r(t),n.d(t,"default",function(){return v});var o="undefined"!=typeof document;if("undefined"!=typeof DEBUG&&DEBUG&&!o)throw new Error("vue-style-loader cannot be used in a non-browser environment. Use { target: 'node' } in your Webpack config to indicate a server-rendering environment.");var s={},i=o&&(document.head||document.getElementsByTagName("head")[0]),a=null,u=0,c=!1,p=function(){},d=null,f="data-vue-ssr-id",l="undefined"!=typeof navigator&&/msie [6-9]\b/.test(navigator.userAgent.toLowerCase());function v(e,t,n,o){c=n,d=o||{};var i=r(e,t);return h(i),function(t){for(var n=[],o=0;o<i.length;o++){var a=i[o];(u=s[a.id]).refs--,n.push(u)}t?h(i=r(e,t)):i=[];for(o=0;o<n.length;o++){var u;if(0===(u=n[o]).refs){for(var c=0;c<u.parts.length;c++)u.parts[c]();delete s[u.id]}}}}function h(e){for(var t=0;t<e.length;t++){var n=e[t],r=s[n.id];if(r){r.refs++;for(var o=0;o<r.parts.length;o++)r.parts[o](n.parts[o]);for(;o<n.parts.length;o++)r.parts.push(g(n.parts[o]));r.parts.length>n.parts.length&&(r.parts.length=n.parts.length)}else{var i=[];for(o=0;o<n.parts.length;o++)i.push(g(n.parts[o]));s[n.id]={id:n.id,refs:1,parts:i}}}}function m(){var e=document.createElement("style");return e.type="text/css",i.appendChild(e),e}function g(e){var t,n,r=document.querySelector("style["+f+'~="'+e.id+'"]');if(r){if(c)return p;r.parentNode.removeChild(r)}if(l){var o=u++;r=a||(a=m()),t=_.bind(null,r,o,!1),n=_.bind(null,r,o,!0)}else r=m(),t=function(e,t){var n=t.css,r=t.media,o=t.sourceMap;r&&e.setAttribute("media",r);d.ssrId&&e.setAttribute(f,t.id);o&&(n+="\n/*# sourceURL="+o.sources[0]+" */",n+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(o))))+" */");if(e.styleSheet)e.styleSheet.cssText=n;else{for(;e.firstChild;)e.removeChild(e.firstChild);e.appendChild(document.createTextNode(n))}}.bind(null,r),n=function(){r.parentNode.removeChild(r)};return t(e),function(r){if(r){if(r.css===e.css&&r.media===e.media&&r.sourceMap===e.sourceMap)return;t(e=r)}else n()}}var y,b=(y=[],function(e,t){return y[e]=t,y.filter(Boolean).join("\n")});function _(e,t,n,r){var o=n?"":r.css;if(e.styleSheet)e.styleSheet.cssText=b(t,o);else{var s=document.createTextNode(o),i=e.childNodes;i[t]&&e.removeChild(i[t]),i.length?e.insertBefore(s,i[t]):e.appendChild(s)}}},function(e,t,n){"use strict";n.r(t);var r={props:{},data:()=>({msg:"this is a component"}),watch:{},created(){},methods:{},computed:{}},o=function(){var e=this.$createElement;return(this._self._c||e)("div",{staticClass:"pink"},[this._v("\n    {msg}\n")])};o._withStripped=!0;var s=!1;var i=function(e,t,n,r,o,s,i,a){var u=typeof(e=e||{}).default;"object"!==u&&"function"!==u||(e=e.default);var c,p="function"==typeof e?e.options:e;if(t&&(p.render=t,p.staticRenderFns=n,p._compiled=!0),r&&(p.functional=!0),s&&(p._scopeId=s),i?(c=function(e){(e=e||this.$vnode&&this.$vnode.ssrContext||this.parent&&this.parent.$vnode&&this.parent.$vnode.ssrContext)||"undefined"==typeof __VUE_SSR_CONTEXT__||(e=__VUE_SSR_CONTEXT__),o&&o.call(this,e),e&&e._registeredComponents&&e._registeredComponents.add(i)},p._ssrRegister=c):o&&(c=a?function(){o.call(this,this.$root.$options.shadowRoot)}:o),c)if(p.functional){p._injectStyles=c;var d=p.render;p.render=function(e,t){return c.call(t),d(e,t)}}else{var f=p.beforeCreate;p.beforeCreate=f?[].concat(f,c):[c]}return{exports:e,options:p}}(r,o,[],!1,function(e){s||n(4)},"data-v-6738aa60",null);i.options.__file="src/VirtualList.vue";var a=i.exports;const u={install(e,t){e.component("VirtualList",a)}};t.default=u},function(e,t){e.exports=function(e){var t=[];return t.toString=function(){return this.map(function(t){var n=function(e,t){var n=e[1]||"",r=e[3];if(!r)return n;if(t&&"function"==typeof btoa){var o=(i=r,"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(i))))+" */"),s=r.sources.map(function(e){return"/*# sourceURL="+r.sourceRoot+e+" */"});return[n].concat(s).concat([o]).join("\n")}var i;return[n].join("\n")}(t,e);return t[2]?"@media "+t[2]+"{"+n+"}":n}).join("")},t.i=function(e,n){"string"==typeof e&&(e=[[null,e,""]]);for(var r={},o=0;o<this.length;o++){var s=this[o][0];"number"==typeof s&&(r[s]=!0)}for(o=0;o<e.length;o++){var i=e[o];"number"==typeof i[0]&&r[i[0]]||(n&&!i[2]?i[2]=n:n&&(i[2]="("+i[2]+") and ("+n+")"),t.push(i))}},t}},function(e,t,n){(e.exports=n(2)(!0)).push([e.i,"\n.pink[data-v-6738aa60] {\n    background-color: pink;\n}\n","",{version:3,sources:["/Users/yuanfu/Documents/virtual-list/src/src/VirtualList.vue"],names:[],mappings:";AA6BA;IACA,uBAAA;CACA",file:"VirtualList.vue",sourcesContent:["<template>\n    <div class=\"pink\">\n        {msg}\n    </div>\n</template>\n\n<script>\nexport default {\n    props: {\n\n    },\n    data() {\n        return {\n            msg: 'this is a component'\n        }\n    },\n    watch: {\n    },\n    created() {\n    },\n    methods: {\n        \n    },\n    computed: {\n    }\n}\n<\/script>\n\n<style scoped>\n.pink {\n    background-color: pink;\n}\n</style>"],sourceRoot:""}])},function(e,t,n){var r=n(3);"string"==typeof r&&(r=[[e.i,r,""]]),r.locals&&(e.exports=r.locals);(0,n(0).default)("7a442e80",r,!1,{})}])});
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["virtual-block"] = factory();
+	else
+		root["virtual-block"] = factory();
+})(window, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/dist/";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/index.js");
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./src/VirtualBlock.vue":
+/*!****************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./src/VirtualBlock.vue ***!
+  \****************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    // window.pageYoffset is the scrollTop relative to window
+    // window.innerHeight || document.documentElement.clientHeight is the window viewport height
+    // element.offsetTop is the element start position from top of window
+
+    // TODif data gets filtered or changed, need update the items as well
+    props: {
+        // data is required
+        // height is required if pageMode is set to false
+        // when fixedBlockHeight is specified, the height key in data will be ignored
+        data: {
+            type: Array,
+            required: true
+        },
+        height: {
+            type: Number
+        },
+        fixedBlockHeight: {
+            type: Number
+        },
+        pageMode: {
+            type: Boolean,
+            default: true
+        }
+    },
+
+    data: function data() {
+        return {
+            viewportBegin: 0,
+            viewportEnd: this.height,
+            offsetTop: 0,
+            offsetBot: 0,
+            renderList: [],
+            transformedData: []
+        };
+    },
+
+    watch: {
+        data: {
+            handler: function handler(newVal, oldVal) {
+                this.computeTransformedData(newVal);
+            },
+            immediate: true
+        }
+    },
+    created: function created() {
+        // add to window scroll
+        if (this.pageMode) {
+            window.addEventListener('scroll', this.handleScroll);
+        }
+    },
+    mounted: function mounted() {
+        if (this.pageMode) {
+            // page mode 
+            // initialize transformed data here
+            this.computeTransformedData(this.data);
+        }
+        this.updateVb(0);
+        // console.log('mounted offsetTop', this.$refs.vl.offsetTop);
+        // console.log('data', this.data);
+        // const testArr = [1,2,4,6,9,14,15];
+        // const blks = [0,1,2,3,4,5,6];
+
+        // const upper = this.binarySearchLowerBound(0, testArr);
+        // const lower = this.binarySearchUpperBound(20, testArr);
+        // console.log('bs lower bound', upper);
+        // console.log('bs upper bound', lower);
+    },
+    destroyed: function destroyed() {
+        if (this.pageMode) {
+            window.removeEventListener('scroll', this.handleScroll);
+        }
+    },
+
+    methods: {
+        computeTransformedData: function computeTransformedData(oriArr) {
+            if (!this.fixedRowHeight && (this.pageMode && this.$refs.vl || !this.pageMode)) {
+                var curHeight = this.pageMode ? this.$refs.vl.offsetTop : 0;
+                var rt = [curHeight];
+                oriArr.forEach(function (item) {
+                    curHeight += item.height;
+                    rt.push(curHeight);
+                });
+                this.transformedData = rt;
+            }
+        },
+        handleScroll: function handleScroll(evt) {
+            var _this = this;
+
+            var scrollTop = this.pageMode ? window.pageYOffset : this.$refs.vl.scrollTop;
+            window.requestAnimationFrame(function () {
+                _this.updateVb(scrollTop);
+            });
+        },
+        binarySearchLowerBound: function binarySearchLowerBound(s, arr) {
+            var lo = 0;
+            var hi = arr.length - 1;
+            var mid = void 0;
+            while (lo <= hi) {
+                // integer division
+                mid = ~~((hi + lo) / 2);
+                if (arr[mid] > s) {
+                    if (lo === hi) {
+                        // start position less than the smallest element in arr
+                        return 0;
+                    } else {
+                        hi = mid - 1;
+                    }
+                } else if (arr[mid] < s) {
+                    if (mid + 1 < arr.length) {
+                        if (arr[mid + 1] > s) {
+                            return mid;
+                        } else {
+                            // normal flow
+                            lo = mid + 1;
+                        }
+                    } else {
+                        // not a valid start position
+                        // start position > total height
+                        return -1;
+                    }
+                } else {
+                    // only return the matched lower bound index
+                    // may be modified later for smooth
+                    return mid;
+                }
+            }
+        },
+        binarySearchUpperBound: function binarySearchUpperBound(e, arr) {
+            var lo = 0;
+            var hi = arr.length - 1;
+            var mid = void 0;
+            while (lo <= hi) {
+                mid = ~~((hi + lo) / 2);
+                if (arr[mid] > e) {
+                    if (mid > 0) {
+                        if (arr[mid - 1] < e) {
+                            return mid;
+                        } else {
+                            // normal flow
+                            hi = mid - 1;
+                        }
+                    } else {
+                        // not a valid end position
+                        // end position < view port start position
+                        return -1;
+                    }
+                } else if (arr[mid] < e) {
+                    if (lo === hi) {
+                        // end position greater than the biggest element in arr
+                        return arr.length - 1;
+                    } else {
+                        lo = mid + 1;
+                    }
+                } else {
+                    // lower bound should return previous block
+                    // the slice func handles the index offset issue
+                    return mid;
+                }
+            }
+        },
+        fixedBlockHeightLowerBound: function fixedBlockHeightLowerBound(s, fixedBlockHeight) {
+            var sAdjusted = this.pageMode ? s - this.$refs.vl.offsetTop : s;
+            var computedStartIndex = ~~(sAdjusted / fixedBlockHeight);
+            return computedStartIndex >= 0 ? computedStartIndex : 0;
+        },
+        fixedBlockHeightUpperBound: function fixedBlockHeightUpperBound(e, fixedBlockHeight) {
+            var eAdjusted = this.pageMode ? e - this.$refs.vl.offsetTop : e;
+            var compuedEndIndex = Math.ceil(eAdjusted / fixedBlockHeight);
+            return compuedEndIndex <= this.data.length ? compuedEndIndex : this.data.length;
+        },
+        findBlocksInViewport: function findBlocksInViewport(s, e, heightArr, blockArr) {
+            if (s < e) {
+                var lo = this.fixedBlockHeight ? this.fixedBlockHeightLowerBound(s, this.fixedBlockHeight) : this.binarySearchLowerBound(s, heightArr);
+                var hi = this.fixedBlockHeight ? this.fixedBlockHeightUpperBound(e, this.fixedBlockHeight) : this.binarySearchUpperBound(e, heightArr);
+                var vlOffset = this.pageMode ? this.$refs.vl.offsetTop : 0;
+                // set top
+                if (this.fixedBlockHeight) {
+                    this.offsetTop = lo >= 0 ? lo * this.fixedBlockHeight : 0;
+                } else {
+                    this.offsetTop = lo >= 0 ? heightArr[lo] - vlOffset : 0;
+                }
+                // set bot
+                if (this.fixedBlockHeight) {
+                    this.offsetBot = hi >= 0 ? (blockArr.length - hi) * this.fixedBlockHeight : 0;
+                } else {
+                    this.offsetBot = hi >= 0 ? heightArr[heightArr.length - 1] - heightArr[hi] : 0;
+                }
+                return blockArr.slice(lo, hi);;
+            } else {
+                this.offsetTop = 0;
+                this.offsetBot = 0;
+                return [];
+            }
+        },
+        updateVb: function updateVb(scrollTop) {
+            var viewportHeight = this.pageMode ? window.innerHeight : this.height;
+            this.viewportBegin = scrollTop;
+            this.viewportEnd = scrollTop + viewportHeight;
+            this.renderList = this.findBlocksInViewport(this.viewportBegin, this.viewportEnd, this.transformedData, this.data);
+            //  console.log(this.renderList);
+        }
+    },
+    computed: {
+        containerStyle: function containerStyle() {
+            return _extends({}, !this.pageMode && { height: this.height + 'px' }, !this.pageMode && { 'overflow-y': 'scroll' });
+        }
+    }
+};
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/runtime/component-normalizer.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/runtime/component-normalizer.js ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+function normalizeComponent (
+  scriptExports,
+  render,
+  staticRenderFns,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier, /* server only */
+  shadowMode /* vue-cli only */
+) {
+  scriptExports = scriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof scriptExports.default
+  if (type === 'object' || type === 'function') {
+    scriptExports = scriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (render) {
+    options.render = render
+    options.staticRenderFns = staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = shadowMode
+      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
+      : injectStyles
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      var originalRender = options.render
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return originalRender(h, context)
+      }
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    }
+  }
+
+  return {
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-7421b108\",\"hasScoped\":false,\"optionsId\":\"1\",\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/VirtualBlock.vue":
+/*!***********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-7421b108","hasScoped":false,"optionsId":"1","buble":{"transforms":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/VirtualBlock.vue ***!
+  \***********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',_vm._g({ref:"vl",style:(_vm.containerStyle)},_vm.pageMode ? {} : {scroll: _vm.handleScroll}),[_c('div',{style:({height: (_vm.offsetTop + "px")})}),_vm._v(" "),_vm._l((_vm.renderList),function(item){return _c('div',{key:("" + (item.id)),style:({height: ((_vm.fixedBlockHeight ? _vm.fixedBlockHeight : item.height) + "px")})},[_vm._t("default",null,{data:item})],2)}),_vm._v(" "),_c('div',{style:({height: (_vm.offsetBot + "px")})})],2)}
+var staticRenderFns = []
+
+
+/***/ }),
+
+/***/ "./src/VirtualBlock.vue":
+/*!******************************!*\
+  !*** ./src/VirtualBlock.vue ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !babel-loader!../node_modules/vue-loader/lib/selector?type=script&index=0!./VirtualBlock.vue */ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./src/VirtualBlock.vue");
+/* harmony import */ var _babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_template_compiler_index_id_data_v_7421b108_hasScoped_false_optionsId_1_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../node_modules/vue-loader/lib/template-compiler/index?{"id":"data-v-7421b108","hasScoped":false,"optionsId":"1","buble":{"transforms":{}}}!../node_modules/vue-loader/lib/selector?type=template&index=0!./VirtualBlock.vue */ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-7421b108\",\"hasScoped\":false,\"optionsId\":\"1\",\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/VirtualBlock.vue");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_component_normalizer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/component-normalizer */ "./node_modules/vue-loader/lib/runtime/component-normalizer.js");
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+
+var Component = Object(_node_modules_vue_loader_lib_runtime_component_normalizer__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_0___default.a,
+  _node_modules_vue_loader_lib_template_compiler_index_id_data_v_7421b108_hasScoped_false_optionsId_1_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_1__["render"],
+  _node_modules_vue_loader_lib_template_compiler_index_id_data_v_7421b108_hasScoped_false_optionsId_1_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_1__["staticRenderFns"],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+
+/* harmony default export */ __webpack_exports__["default"] = (Component.exports);
+
+
+/***/ }),
+
+/***/ "./src/index.js":
+/*!**********************!*\
+  !*** ./src/index.js ***!
+  \**********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _VirtualBlock = __webpack_require__(/*! ./VirtualBlock.vue */ "./src/VirtualBlock.vue");
+
+var _VirtualBlock2 = _interopRequireDefault(_VirtualBlock);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var plugin = {
+    install: function install(Vue, options) {
+        Vue.component("VirtualBlock", _VirtualBlock2.default);
+    }
+};
+
+exports.default = plugin;
+
+/***/ })
+
+/******/ });
+});
 //# sourceMappingURL=index.js.map

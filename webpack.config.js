@@ -86,7 +86,7 @@ var libConfig = {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
     filename: 'index.js',
-    library:'virtual-list',
+    library:'virtual-block',
     libraryTarget: 'umd'
   },
   module: {
@@ -118,7 +118,12 @@ var libConfig = {
   performance: {
     hints: false
   },
-  devtool: '#source-map'
+  devtool: '#source-map',
+  plugins: [
+    new webpack.LoaderOptionsPlugin({
+      minimize: true
+    })
+  ]
 }
 
 module.exports = [devConfig, libConfig]
