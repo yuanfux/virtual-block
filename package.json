@@ -1,7 +1,7 @@
 {
-  "name": "virtual-list",
+  "name": "virtual-block",
   "version": "1.0.0",
-  "description": "vue virtual list",
+  "description": "vue virtual block",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

@@ -1,17 +1,8 @@
 <template>
     <div id="app">
-        <div>{{tryes()}}</div>
+        <!-- <div>{{tryes()}}</div> -->
         <VirtualList v-if="true" :pageMode="false" :height="300" :data="blocks">
             <template slot-scope="{data}">
-                <!-- <div v-if="data.id === 1" :style="blockStyle()">
-                    {{data.height}}
-                </div>
-                <div v-if="data.id === 0" :style="blockStyle()">
-                    {{data.height}}
-                </div>
-                <div v-if="data.id === 2" :style="blockStyle()">
-                    {{data.height}}
-                </div> -->
                 <div :style="{height: '100%', 'background-color': data.color}">
                     {{data.id}}
                 </div>
@@ -49,7 +40,7 @@ export default {
     methods: {
         dataConstructor() {
             let constructedArr = [];
-            for (let i = 0 ; i < 1000 ; i++) {
+            for (let i = 0 ; i < 20 ; i++) {
                 let constructedObj = {};
                 constructedObj['height'] = 50;
                 constructedObj['id'] = i;

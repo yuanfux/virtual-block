@@ -1,8 +1,8 @@
-import VirtualList from './VirtualList.vue';
+import VirtualBlock from './VirtualBlock.vue';
 
 const plugin = {
     install(Vue, options) {
-        Vue.component("VirtualList", VirtualList);
+        Vue.component("VirtualBlock", VirtualBlock);
     }
 }
 
