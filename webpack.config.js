@@ -7,8 +7,8 @@ var demoConfig = {
   mode: env || 'development',
   entry: './demo/src/index.js',
   output: {
-    path: path.resolve(__dirname, 'demo/dist'), // local path
-    publicPath: '/demo/dist/', // public path can be accessed thru browser
+    path: path.resolve(__dirname, 'docs/'), // local path
+    publicPath: '/demo/dist', // public path can be accessed thru browser
     filename: 'index.js'
   },
   module: {
@@ -126,4 +126,4 @@ var libConfig = {
   ]
 }
 
-module.exports = [devConfig, libConfig]
+module.exports = [demoConfig, devConfig, libConfig]
