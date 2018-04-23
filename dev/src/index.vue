@@ -10,13 +10,13 @@
         </VirtualBlock>
         <div style="margin-top: 200px;">
         </div>
-        <VirtualBlock :pageMode="true" :fixedBlockHeight="30" :height="500" :data="blocks">
+        <!-- <VirtualBlock :pageMode="true" :fixedBlockHeight="30" :height="500" :data="blocks">
             <template slot-scope="{data}">
                 <div :style="{height: '100%', 'background-color': data.color}">
                     {{data.id}}
                 </div>
             </template>
-        </VirtualBlock>
+        </VirtualBlock> -->
     </div>
 </template>
 
@@ -40,7 +40,7 @@ export default {
     methods: {
         dataConstructor() {
             let constructedArr = [];
-            for (let i = 0 ; i < 20 ; i++) {
+            for (let i = 0 ; i < 2000 ; i++) {
                 let constructedObj = {};
                 constructedObj['height'] = 50;
                 constructedObj['id'] = i;

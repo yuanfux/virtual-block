@@ -101,19 +101,12 @@ export default {
             }
         },
         handleScroll(evt) {
-            console.log('scroll triggered');
             const scrollTop = this.pageMode ? window.pageYOffset : this.$refs.vl.scrollTop;
-            // window.requestAnimationFrame(
-            //     () => {
-                    // console.log('request Animation frame gets called');
-                    // this.viewportBegin = scrollTop;
-                    // console.log('begin set here');
-                    // this.viewportEnd = scrollTop + this.height;
-                    // console.log('end set here');
-                    // this.$forceUpdate();
-            this.updateVb(scrollTop);
-                // }
-            // )
+            window.requestAnimationFrame(
+                () => {
+                    this.updateVb(scrollTop);
+                }
+            );
         },
         binarySearchLowerBound(s, arr) {
             let lo = 0;
@@ -200,8 +193,6 @@ export default {
                 const hi = this.fixedBlockHeight ? 
                            this.fixedBlockHeightUpperBound(e, this.fixedBlockHeight) :
                            this.binarySearchUpperBound(e, heightArr);
-                console.log('lo', lo);
-                console.log('hi', hi);
                 var vlOffset = this.pageMode ? this.$refs.vl.offsetTop : 0;
                 // set top
                 if(this.fixedBlockHeight) {
@@ -227,12 +218,11 @@ export default {
              this.viewportBegin = scrollTop;
              this.viewportEnd = scrollTop + viewportHeight;
              this.renderList = this.findBlocksInViewport(this.viewportBegin, this.viewportEnd, this.transformedData, this.data);
-             console.log(this.renderList);
+            //  console.log(this.renderList);
         }
     },
     computed: {
         containerStyle() {
-            console.log('container style changed');
             return {
                 ...(!this.pageMode && {height: `${this.height}px`}),
                 ...(!this.pageMode && {'overflow-y' : 'scroll'})
