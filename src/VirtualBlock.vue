@@ -2,7 +2,9 @@
     <div v-on="pageMode ? {} : {scroll: handleScroll}" :style="containerStyle" ref="vl">
         <div :style="{height: `${offsetTop}px`}">
         </div>
-        <div v-for="item in renderList" :style="{height: `${item.height}px`}" :key="`${item.id}`">
+        <div v-for="item in renderList" 
+             :style="{height: `${fixedBlockHeight ? fixedBlockHeight : item.height}px`}" 
+             :key="`${item.id}`">
             <slot :data="item">
             </slot>
         </div>
@@ -19,11 +21,17 @@ export default {
 
     // TODif data gets filtered or changed, need update the items as well
     props: {
+        // data is required
+        // height is required if pageMode is set to false
+        // when fixedBlockHeight is specified, the height key in data will be ignored
         data: {
             type: Array,
             required: true
         },
         height: {
+            type: Number
+        },
+        fixedBlockHeight: {
             type: Number
         },
         pageMode: {
@@ -62,7 +70,7 @@ export default {
             // initialize transformed data here
             this.computeTransformedData(this.data);
         }
-        this.updateVl(0);
+        this.updateVb(0);
         // console.log('mounted offsetTop', this.$refs.vl.offsetTop);
         // console.log('data', this.data);
         // const testArr = [1,2,4,6,9,14,15];
@@ -80,8 +88,7 @@ export default {
     },
     methods: {
         computeTransformedData(oriArr) {
-            console.log('oriArr', oriArr);
-            if (this.pageMode && this.$refs.vl || !this.pageMode) {
+            if (!this.fixedRowHeight && ((this.pageMode && this.$refs.vl) || !this.pageMode)) {
                 let curHeight = this.pageMode ? this.$refs.vl.offsetTop : 0;
                 let rt = [curHeight];
                 oriArr.forEach(
@@ -90,7 +97,6 @@ export default {
                         rt.push(curHeight);
                     }
                 );
-                console.log('after computing', rt);
                 this.transformedData = rt;
             }
         },
@@ -105,13 +111,9 @@ export default {
                     // this.viewportEnd = scrollTop + this.height;
                     // console.log('end set here');
                     // this.$forceUpdate();
-            console.log('scrollTop', scrollTop);
-            this.updateVl(scrollTop);
+            this.updateVb(scrollTop);
                 // }
             // )
-        },
-        updated() {
-            console.log('comp gets updated');
         },
         binarySearchLowerBound(s, arr) {
             let lo = 0;
@@ -180,18 +182,39 @@ export default {
                 }
             }
         },
+        fixedBlockHeightLowerBound(s, fixedBlockHeight) {
+            const sAdjusted = this.pageMode ? s - this.$refs.vl.offsetTop : s;
+            const computedStartIndex = ~~(sAdjusted / fixedBlockHeight);
+            return computedStartIndex >= 0 ? computedStartIndex : 0;
+        },
+        fixedBlockHeightUpperBound(e, fixedBlockHeight) {
+            const eAdjusted = this.pageMode ? e - this.$refs.vl.offsetTop : e;
+            const compuedEndIndex = Math.ceil(eAdjusted / fixedBlockHeight);
+            return compuedEndIndex <= this.data.length ? compuedEndIndex : this.data.length;
+        },
         findBlocksInViewport(s, e, heightArr, blockArr) {
             if (s < e) {
-                const lo = this.binarySearchLowerBound(s, heightArr);
-                const hi = this.binarySearchUpperBound(e, heightArr);
-                var vlOffset = this.pageMode ? this.$refs.vl.offsetTop : 0;
-                console.log('vlOffset', vlOffset);
-                // set top
-                this.offsetTop = lo >= 0 ? heightArr[lo] - vlOffset : 0;
-                // set bot
+                const lo = this.fixedBlockHeight ? 
+                           this.fixedBlockHeightLowerBound(s, this.fixedBlockHeight) :
+                           this.binarySearchLowerBound(s, heightArr);
+                const hi = this.fixedBlockHeight ? 
+                           this.fixedBlockHeightUpperBound(e, this.fixedBlockHeight) :
+                           this.binarySearchUpperBound(e, heightArr);
+                console.log('lo', lo);
                 console.log('hi', hi);
-                this.offsetBot = hi >= 0 ? heightArr[heightArr.length - 1] - heightArr[hi] : 0;
-                console.log('this.offsetBot', this.offsetBot);
+                var vlOffset = this.pageMode ? this.$refs.vl.offsetTop : 0;
+                // set top
+                if(this.fixedBlockHeight) {
+                    this.offsetTop = lo >= 0 ? lo * this.fixedBlockHeight : 0;
+                } else {
+                    this.offsetTop = lo >= 0 ? heightArr[lo] - vlOffset : 0;
+                }
+                // set bot
+                if (this.fixedBlockHeight) {
+                    this.offsetBot = hi >= 0 ? (blockArr.length - hi ) * this.fixedBlockHeight : 0;
+                } else {
+                    this.offsetBot = hi >= 0 ? heightArr[heightArr.length - 1] - heightArr[hi] : 0;
+                }
                 return blockArr.slice(lo, hi);;
             } else {
                 this.offsetTop = 0;
@@ -199,7 +222,7 @@ export default {
                 return [];
             }
         },
-        updateVl(scrollTop) {
+        updateVb(scrollTop) {
              const viewportHeight = this.pageMode ? window.innerHeight : this.height;
              this.viewportBegin = scrollTop;
              this.viewportEnd = scrollTop + viewportHeight;

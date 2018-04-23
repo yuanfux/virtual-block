@@ -1,22 +1,22 @@
 <template>
     <div id="app">
         <!-- <div>{{tryes()}}</div> -->
-        <VirtualList v-if="true" :pageMode="false" :height="300" :data="blocks">
+        <VirtualBlock :fixedBlockHeight="30" v-if="true" :pageMode="false" :height="300" :data="blocks">
             <template slot-scope="{data}">
                 <div :style="{height: '100%', 'background-color': data.color}">
                     {{data.id}}
                 </div>
             </template>
-        </VirtualList>
+        </VirtualBlock>
         <div style="margin-top: 200px;">
         </div>
-        <VirtualList :pageMode="true" :height="500" :data="blocks">
+        <VirtualBlock :pageMode="true" :fixedBlockHeight="30" :height="500" :data="blocks">
             <template slot-scope="{data}">
                 <div :style="{height: '100%', 'background-color': data.color}">
                     {{data.id}}
                 </div>
             </template>
-        </VirtualList>
+        </VirtualBlock>
     </div>
 </template>
 
