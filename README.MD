@@ -1,7 +1,20 @@
 # virtual-block
-> Render what's visible
+> 🌈Render what's visible
 
 [Demo](http://jasonfuyuan.com/virtual-block/)
+
+## Install
+```
+npm i virtual-block
+```
+
+## Import
+```javascript
+import Vue from 'vue'
+import VirtualBlock from 'virtual-block/dist'
+Vue.use(VirtualBlock)
+```
+
 
 ## Props
 Name | Type | Default | Description
