@@ -15,11 +15,6 @@
 
 <script>
 export default {
-    // window.pageYoffset is the scrollTop relative to window
-    // window.innerHeight || document.documentElement.clientHeight is the window viewport height
-    // element.offsetTop is the element start position from top of window
-
-    // TODif data gets filtered or changed, need update the items as well
     props: {
         // data is required
         // height is required if pageMode is set to false
@@ -54,32 +49,55 @@ export default {
         data: {
             handler: function(newVal, oldVal) {
                 this.computeTransformedData(newVal);
+                // code blow used to update view when data changed
+                if (oldVal) {
+                    this.$nextTick(
+                        () => {
+                            // reset the scrollTop for container
+                            // update view by handleScroll()
+                            this.$refs.vl.scrollTop = 0;
+                            this.handleScroll();
+                        }
+                    );
+                }
             },
-            immediate: true
+            immediate: true // when not in page mode, initailize data here
+        },
+        pageMode(newVal) {
+            if (newVal) {
+                window.addEventListener('scroll', this.handleScroll);
+            } else {
+                window.removeEventListener('scroll', this.handleScroll);
+            }
+            // recompute transformed data when pageMode changed
+            this.computeTransformedData(this.data);
+            this.$nextTick(
+                () => {
+                    // reset the scrollTop for container
+                    // update view by handleScroll()
+                    this.$refs.vl.scrollTop = 0;
+                    this.handleScroll()
+                }
+            );
+        },
+        fixedBlockHeight() {
+            // update view when fixedBlockHeight changed
+            this.handleScroll();
         }
     },
     created() {
-        // add to window scroll
         if (this.pageMode) {
+            // add scroll onto window
             window.addEventListener('scroll', this.handleScroll);
         }
     },
     mounted() {
         if (this.pageMode) {
-            // page mode 
-            // initialize transformed data here
+            // in page mode, initialize transformed data here
             this.computeTransformedData(this.data);
         }
+        // initialize view by calling updateVb
         this.updateVb(0);
-        // console.log('mounted offsetTop', this.$refs.vl.offsetTop);
-        // console.log('data', this.data);
-        // const testArr = [1,2,4,6,9,14,15];
-        // const blks = [0,1,2,3,4,5,6];
-
-        // const upper = this.binarySearchLowerBound(0, testArr);
-        // const lower = this.binarySearchUpperBound(20, testArr);
-        // console.log('bs lower bound', upper);
-        // console.log('bs upper bound', lower);
     },
     destroyed() {
         if (this.pageMode) {
@@ -88,6 +106,9 @@ export default {
     },
     methods: {
         computeTransformedData(oriArr) {
+            // compute accumulative height value for each block
+            // note the function related to the variable 'pageMode'
+            // and when fixedRowHeight is specified, transformedData is not needed
             if (!this.fixedRowHeight && ((this.pageMode && this.$refs.vl) || !this.pageMode)) {
                 let curHeight = this.pageMode ? this.$refs.vl.offsetTop : 0;
                 let rt = [curHeight];
@@ -100,8 +121,10 @@ export default {
                 this.transformedData = rt;
             }
         },
-        handleScroll(evt) {
+        handleScroll() {
+            // scrollTop is relative to the varible pageMode
             const scrollTop = this.pageMode ? window.pageYOffset : this.$refs.vl.scrollTop;
+            // use requestAnimationFrame to ensure smooth scrolling visual effects
             window.requestAnimationFrame(
                 () => {
                     this.updateVb(scrollTop);
@@ -109,6 +132,8 @@ export default {
             );
         },
         binarySearchLowerBound(s, arr) {
+            // used to search the lower bound in-viewport index for data array
+            // when height is not fixed
             let lo = 0;
             let hi = arr.length - 1;
             let mid;
@@ -116,7 +141,7 @@ export default {
                 // integer division
                 mid = ~~((hi + lo) / 2);
                 if (arr[mid] > s) {
-                    if (lo === hi) {
+                    if (mid === 0) {
                         // start position less than the smallest element in arr
                         return 0;
                     } else {
@@ -143,6 +168,8 @@ export default {
             }
         },
         binarySearchUpperBound(e, arr) {
+            // used to search the upper bound in-viewport index for data array
+            // when height is not fixed
             let lo = 0;
             let hi = arr.length - 1;
             let mid;
@@ -162,7 +189,7 @@ export default {
                         return -1;
                     }
                 } else if (arr[mid] < e) {
-                    if (lo === hi) {
+                    if (mid === arr.length - 1) {
                         // end position greater than the biggest element in arr
                         return arr.length - 1;
                     } else {
@@ -176,11 +203,15 @@ export default {
             }
         },
         fixedBlockHeightLowerBound(s, fixedBlockHeight) {
+            // used to compute the lower bound in-viewport index for data array
+            // when in fixed height mode
             const sAdjusted = this.pageMode ? s - this.$refs.vl.offsetTop : s;
             const computedStartIndex = ~~(sAdjusted / fixedBlockHeight);
             return computedStartIndex >= 0 ? computedStartIndex : 0;
         },
         fixedBlockHeightUpperBound(e, fixedBlockHeight) {
+            // used to compute the upper bound in-viewport index for data array
+            // when in fixed height mode
             const eAdjusted = this.pageMode ? e - this.$refs.vl.offsetTop : e;
             const compuedEndIndex = Math.ceil(eAdjusted / fixedBlockHeight);
             return compuedEndIndex <= this.data.length ? compuedEndIndex : this.data.length;
@@ -193,19 +224,21 @@ export default {
                 const hi = this.fixedBlockHeight ? 
                            this.fixedBlockHeightUpperBound(e, this.fixedBlockHeight) :
                            this.binarySearchUpperBound(e, heightArr);
+
                 var vlOffset = this.pageMode ? this.$refs.vl.offsetTop : 0;
-                // set top
+                // set top spacer
                 if(this.fixedBlockHeight) {
                     this.offsetTop = lo >= 0 ? lo * this.fixedBlockHeight : 0;
                 } else {
                     this.offsetTop = lo >= 0 ? heightArr[lo] - vlOffset : 0;
                 }
-                // set bot
+                // set bot spacer
                 if (this.fixedBlockHeight) {
                     this.offsetBot = hi >= 0 ? (blockArr.length - hi ) * this.fixedBlockHeight : 0;
                 } else {
                     this.offsetBot = hi >= 0 ? heightArr[heightArr.length - 1] - heightArr[hi] : 0;
                 }
+                // return the sliced the data array
                 return blockArr.slice(lo, hi);;
             } else {
                 this.offsetTop = 0;
@@ -214,11 +247,11 @@ export default {
             }
         },
         updateVb(scrollTop) {
-             const viewportHeight = this.pageMode ? window.innerHeight : this.height;
-             this.viewportBegin = scrollTop;
-             this.viewportEnd = scrollTop + viewportHeight;
-             this.renderList = this.findBlocksInViewport(this.viewportBegin, this.viewportEnd, this.transformedData, this.data);
-            //  console.log(this.renderList);
+            // compute the viewport start position and end position based on the scrollTop value
+            const viewportHeight = this.pageMode ? window.innerHeight : this.height;
+            this.viewportBegin = scrollTop;
+            this.viewportEnd = scrollTop + viewportHeight;
+            this.renderList = this.findBlocksInViewport(this.viewportBegin, this.viewportEnd, this.transformedData, this.data);
         }
     },
     computed: {

@@ -114,11 +114,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 
 exports.default = {
-    // window.pageYoffset is the scrollTop relative to window
-    // window.innerHeight || document.documentElement.clientHeight is the window viewport height
-    // element.offsetTop is the element start position from top of window
-
-    // TODif data gets filtered or changed, need update the items as well
     props: {
         // data is required
         // height is required if pageMode is set to false
@@ -153,33 +148,56 @@ exports.default = {
     watch: {
         data: {
             handler: function handler(newVal, oldVal) {
+                var _this = this;
+
                 this.computeTransformedData(newVal);
+                // code blow used to update view when data changed
+                if (oldVal) {
+                    this.$nextTick(function () {
+                        // reset the scrollTop for container
+                        // update view by handleScroll()
+                        _this.$refs.vl.scrollTop = 0;
+                        _this.handleScroll();
+                    });
+                }
             },
-            immediate: true
+            immediate: true // when not in page mode, initailize data here
+        },
+        pageMode: function pageMode(newVal) {
+            var _this2 = this;
+
+            if (newVal) {
+                window.addEventListener('scroll', this.handleScroll);
+            } else {
+                window.removeEventListener('scroll', this.handleScroll);
+            }
+            // recompute transformed data when pageMode changed
+            this.computeTransformedData(this.data);
+            this.$nextTick(function () {
+                // reset the scrollTop for container
+                // update view by handleScroll()
+                _this2.$refs.vl.scrollTop = 0;
+                _this2.handleScroll();
+            });
+        },
+        fixedBlockHeight: function fixedBlockHeight() {
+            // update view when fixedBlockHeight changed
+            this.handleScroll();
         }
     },
     created: function created() {
-        // add to window scroll
         if (this.pageMode) {
+            // add scroll onto window
             window.addEventListener('scroll', this.handleScroll);
         }
     },
     mounted: function mounted() {
         if (this.pageMode) {
-            // page mode 
-            // initialize transformed data here
+            // in page mode, initialize transformed data here
             this.computeTransformedData(this.data);
         }
+        // initialize view by calling updateVb
         this.updateVb(0);
-        // console.log('mounted offsetTop', this.$refs.vl.offsetTop);
-        // console.log('data', this.data);
-        // const testArr = [1,2,4,6,9,14,15];
-        // const blks = [0,1,2,3,4,5,6];
-
-        // const upper = this.binarySearchLowerBound(0, testArr);
-        // const lower = this.binarySearchUpperBound(20, testArr);
-        // console.log('bs lower bound', upper);
-        // console.log('bs upper bound', lower);
     },
     destroyed: function destroyed() {
         if (this.pageMode) {
@@ -189,6 +207,9 @@ exports.default = {
 
     methods: {
         computeTransformedData: function computeTransformedData(oriArr) {
+            // compute accumulative height value for each block
+            // note the function related to the variable 'pageMode'
+            // and when fixedRowHeight is specified, transformedData is not needed
             if (!this.fixedRowHeight && (this.pageMode && this.$refs.vl || !this.pageMode)) {
                 var curHeight = this.pageMode ? this.$refs.vl.offsetTop : 0;
                 var rt = [curHeight];
@@ -199,15 +220,19 @@ exports.default = {
                 this.transformedData = rt;
             }
         },
-        handleScroll: function handleScroll(evt) {
-            var _this = this;
+        handleScroll: function handleScroll() {
+            var _this3 = this;
 
+            // scrollTop is relative to the varible pageMode
             var scrollTop = this.pageMode ? window.pageYOffset : this.$refs.vl.scrollTop;
+            // use requestAnimationFrame to ensure smooth scrolling visual effects
             window.requestAnimationFrame(function () {
-                _this.updateVb(scrollTop);
+                _this3.updateVb(scrollTop);
             });
         },
         binarySearchLowerBound: function binarySearchLowerBound(s, arr) {
+            // used to search the lower bound in-viewport index for data array
+            // when height is not fixed
             var lo = 0;
             var hi = arr.length - 1;
             var mid = void 0;
@@ -215,7 +240,7 @@ exports.default = {
                 // integer division
                 mid = ~~((hi + lo) / 2);
                 if (arr[mid] > s) {
-                    if (lo === hi) {
+                    if (mid === 0) {
                         // start position less than the smallest element in arr
                         return 0;
                     } else {
@@ -242,6 +267,8 @@ exports.default = {
             }
         },
         binarySearchUpperBound: function binarySearchUpperBound(e, arr) {
+            // used to search the upper bound in-viewport index for data array
+            // when height is not fixed
             var lo = 0;
             var hi = arr.length - 1;
             var mid = void 0;
@@ -261,7 +288,7 @@ exports.default = {
                         return -1;
                     }
                 } else if (arr[mid] < e) {
-                    if (lo === hi) {
+                    if (mid === arr.length - 1) {
                         // end position greater than the biggest element in arr
                         return arr.length - 1;
                     } else {
@@ -275,11 +302,15 @@ exports.default = {
             }
         },
         fixedBlockHeightLowerBound: function fixedBlockHeightLowerBound(s, fixedBlockHeight) {
+            // used to compute the lower bound in-viewport index for data array
+            // when in fixed height mode
             var sAdjusted = this.pageMode ? s - this.$refs.vl.offsetTop : s;
             var computedStartIndex = ~~(sAdjusted / fixedBlockHeight);
             return computedStartIndex >= 0 ? computedStartIndex : 0;
         },
         fixedBlockHeightUpperBound: function fixedBlockHeightUpperBound(e, fixedBlockHeight) {
+            // used to compute the upper bound in-viewport index for data array
+            // when in fixed height mode
             var eAdjusted = this.pageMode ? e - this.$refs.vl.offsetTop : e;
             var compuedEndIndex = Math.ceil(eAdjusted / fixedBlockHeight);
             return compuedEndIndex <= this.data.length ? compuedEndIndex : this.data.length;
@@ -288,19 +319,21 @@ exports.default = {
             if (s < e) {
                 var lo = this.fixedBlockHeight ? this.fixedBlockHeightLowerBound(s, this.fixedBlockHeight) : this.binarySearchLowerBound(s, heightArr);
                 var hi = this.fixedBlockHeight ? this.fixedBlockHeightUpperBound(e, this.fixedBlockHeight) : this.binarySearchUpperBound(e, heightArr);
+
                 var vlOffset = this.pageMode ? this.$refs.vl.offsetTop : 0;
-                // set top
+                // set top spacer
                 if (this.fixedBlockHeight) {
                     this.offsetTop = lo >= 0 ? lo * this.fixedBlockHeight : 0;
                 } else {
                     this.offsetTop = lo >= 0 ? heightArr[lo] - vlOffset : 0;
                 }
-                // set bot
+                // set bot spacer
                 if (this.fixedBlockHeight) {
                     this.offsetBot = hi >= 0 ? (blockArr.length - hi) * this.fixedBlockHeight : 0;
                 } else {
                     this.offsetBot = hi >= 0 ? heightArr[heightArr.length - 1] - heightArr[hi] : 0;
                 }
+                // return the sliced the data array
                 return blockArr.slice(lo, hi);;
             } else {
                 this.offsetTop = 0;
@@ -309,11 +342,11 @@ exports.default = {
             }
         },
         updateVb: function updateVb(scrollTop) {
+            // compute the viewport start position and end position based on the scrollTop value
             var viewportHeight = this.pageMode ? window.innerHeight : this.height;
             this.viewportBegin = scrollTop;
             this.viewportEnd = scrollTop + viewportHeight;
             this.renderList = this.findBlocksInViewport(this.viewportBegin, this.viewportEnd, this.transformedData, this.data);
-            //  console.log(this.renderList);
         }
     },
     computed: {
@@ -440,9 +473,9 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-7421b108\",\"hasScoped\":false,\"optionsId\":\"2\",\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/VirtualBlock.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-54c2af52\",\"hasScoped\":false,\"optionsId\":\"1\",\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/VirtualBlock.vue":
 /*!***********************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-7421b108","hasScoped":false,"optionsId":"2","buble":{"transforms":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/VirtualBlock.vue ***!
+  !*** ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-54c2af52","hasScoped":false,"optionsId":"1","buble":{"transforms":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/VirtualBlock.vue ***!
   \***********************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -469,7 +502,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !babel-loader!../node_modules/vue-loader/lib/selector?type=script&index=0!./VirtualBlock.vue */ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./src/VirtualBlock.vue");
 /* harmony import */ var _babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_template_compiler_index_id_data_v_7421b108_hasScoped_false_optionsId_2_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../node_modules/vue-loader/lib/template-compiler/index?{"id":"data-v-7421b108","hasScoped":false,"optionsId":"2","buble":{"transforms":{}}}!../node_modules/vue-loader/lib/selector?type=template&index=0!./VirtualBlock.vue */ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-7421b108\",\"hasScoped\":false,\"optionsId\":\"2\",\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/VirtualBlock.vue");
+/* harmony import */ var _node_modules_vue_loader_lib_template_compiler_index_id_data_v_54c2af52_hasScoped_false_optionsId_1_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../node_modules/vue-loader/lib/template-compiler/index?{"id":"data-v-54c2af52","hasScoped":false,"optionsId":"1","buble":{"transforms":{}}}!../node_modules/vue-loader/lib/selector?type=template&index=0!./VirtualBlock.vue */ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-54c2af52\",\"hasScoped\":false,\"optionsId\":\"1\",\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/VirtualBlock.vue");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_component_normalizer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/component-normalizer */ "./node_modules/vue-loader/lib/runtime/component-normalizer.js");
 /* script */
 
@@ -487,8 +520,8 @@ var __vue_module_identifier__ = null
 
 var Component = Object(_node_modules_vue_loader_lib_runtime_component_normalizer__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_0___default.a,
-  _node_modules_vue_loader_lib_template_compiler_index_id_data_v_7421b108_hasScoped_false_optionsId_2_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_1__["render"],
-  _node_modules_vue_loader_lib_template_compiler_index_id_data_v_7421b108_hasScoped_false_optionsId_2_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_1__["staticRenderFns"],
+  _node_modules_vue_loader_lib_template_compiler_index_id_data_v_54c2af52_hasScoped_false_optionsId_1_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_1__["render"],
+  _node_modules_vue_loader_lib_template_compiler_index_id_data_v_54c2af52_hasScoped_false_optionsId_1_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_1__["staticRenderFns"],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
