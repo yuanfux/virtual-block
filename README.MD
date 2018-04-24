@@ -15,21 +15,6 @@ import VirtualBlock from 'virtual-block/dist'
 Vue.use(VirtualBlock)
 ```
 
-
-## Props
-Name | Type | Default | Description
---- | --- | --- | ---
-`data` | `Array<DataObject>` | - | **Required**. An Array of Object used as the source data.
-`height` | `Number` | - | **Required when `pageMode` is `false`**. The height of the virtual block container.
-`fixedBlockHeight` | `Number` | - | **Optional**. Specify this prop will assume every block has the same height value and the `height` keys in `data object` will be ignored. Note use `fixedBlockHeight` will improve the performance.
-`pageMode` | `Boolean` | `true` | **Optional**. `true` assumes the scroller will be on the `window`. `false` assumes the scroller will be on the `virtual block container`.
-
-## DataObject
-Name | Type | Default | Description
---- | --- | --- | ---
-`id` | String/Number | - | **Required**. Unique key for each virtual block.
-`height` | Number | - | **Required when prop `fixedBlockHeight` is `not` specified**. The height of each virtual block.
-
 ## Usage
 
 ### Page Mode
@@ -75,6 +60,20 @@ Name | Type | Default | Description
     </template>
 </VirtualBlock>
 ```
+
+## Props
+Name | Type | Default | Description
+--- | --- | --- | ---
+`data` | `Array<DataObject>` | - | **Required**. An Array of Object used as the source data.
+`height` | `Number` | - | **Required when `pageMode` is `false`**. The height of the virtual block container.
+`fixedBlockHeight` | `Number` | - | **Optional**. Specify this prop will assume every block has the same height value and the `height` keys in `data object` will be ignored. Note use `fixedBlockHeight` will improve the performance.
+`pageMode` | `Boolean` | `true` | **Optional**. `true` assumes the scroller will be on the `window`. `false` assumes the scroller will be on the `virtual block container`.
+
+## DataObject
+Name | Type | Default | Description
+--- | --- | --- | ---
+`id` | String/Number | - | **Required**. Unique key for each virtual block.
+`height` | Number | - | **Required when prop `fixedBlockHeight` is `not` specified**. The height of each virtual block.
 
 ## License
 MIT
