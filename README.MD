@@ -1,6 +1,6 @@
 # virtual-block
 > Render what's visible
-
+[Demo](http://jasonfuyuan.com/virtual-block/)
 ## Props
 Name | Type | Default | Description
 --- | --- | --- | ---
