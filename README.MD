@@ -1,5 +1,6 @@
 # virtual-block
 > 🌈Render what's visible
+[![npm version](https://badge.fury.io/js/virtual-block.svg)](https://badge.fury.io/js/virtual-block)
 
 [Demo](http://jasonfuyuan.com/virtual-block/)
 
