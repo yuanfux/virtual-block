@@ -156,7 +156,7 @@ exports.default = {
                     this.$nextTick(function () {
                         // reset the scrollTop for container
                         // update view by handleScroll()
-                        _this.$refs.vl.scrollTop = 0;
+                        _this.$refs.vb.scrollTop = 0;
                         _this.handleScroll();
                     });
                 }
@@ -176,7 +176,7 @@ exports.default = {
             this.$nextTick(function () {
                 // reset the scrollTop for container
                 // update view by handleScroll()
-                _this2.$refs.vl.scrollTop = 0;
+                _this2.$refs.vb.scrollTop = 0;
                 _this2.handleScroll();
             });
         },
@@ -210,8 +210,8 @@ exports.default = {
             // compute accumulative height value for each block
             // note the function related to the variable 'pageMode'
             // and when fixedRowHeight is specified, transformedData is not needed
-            if (!this.fixedRowHeight && (this.pageMode && this.$refs.vl || !this.pageMode)) {
-                var curHeight = this.pageMode ? this.$refs.vl.offsetTop : 0;
+            if (!this.fixedRowHeight && (this.pageMode && this.$refs.vb || !this.pageMode)) {
+                var curHeight = this.pageMode ? this.$refs.vb.offsetTop : 0;
                 var rt = [curHeight];
                 oriArr.forEach(function (item) {
                     curHeight += item.height;
@@ -224,7 +224,7 @@ exports.default = {
             var _this3 = this;
 
             // scrollTop is relative to the varible pageMode
-            var scrollTop = this.pageMode ? window.pageYOffset : this.$refs.vl.scrollTop;
+            var scrollTop = this.pageMode ? window.pageYOffset : this.$refs.vb.scrollTop;
             // use requestAnimationFrame to ensure smooth scrolling visual effects
             window.requestAnimationFrame(function () {
                 _this3.updateVb(scrollTop);
@@ -304,14 +304,14 @@ exports.default = {
         fixedBlockHeightLowerBound: function fixedBlockHeightLowerBound(s, fixedBlockHeight) {
             // used to compute the lower bound in-viewport index for data array
             // when in fixed height mode
-            var sAdjusted = this.pageMode ? s - this.$refs.vl.offsetTop : s;
+            var sAdjusted = this.pageMode ? s - this.$refs.vb.offsetTop : s;
             var computedStartIndex = ~~(sAdjusted / fixedBlockHeight);
             return computedStartIndex >= 0 ? computedStartIndex : 0;
         },
         fixedBlockHeightUpperBound: function fixedBlockHeightUpperBound(e, fixedBlockHeight) {
             // used to compute the upper bound in-viewport index for data array
             // when in fixed height mode
-            var eAdjusted = this.pageMode ? e - this.$refs.vl.offsetTop : e;
+            var eAdjusted = this.pageMode ? e - this.$refs.vb.offsetTop : e;
             var compuedEndIndex = Math.ceil(eAdjusted / fixedBlockHeight);
             return compuedEndIndex <= this.data.length ? compuedEndIndex : this.data.length;
         },
@@ -320,12 +320,12 @@ exports.default = {
                 var lo = this.fixedBlockHeight ? this.fixedBlockHeightLowerBound(s, this.fixedBlockHeight) : this.binarySearchLowerBound(s, heightArr);
                 var hi = this.fixedBlockHeight ? this.fixedBlockHeightUpperBound(e, this.fixedBlockHeight) : this.binarySearchUpperBound(e, heightArr);
 
-                var vlOffset = this.pageMode ? this.$refs.vl.offsetTop : 0;
+                var vbOffset = this.pageMode ? this.$refs.vb.offsetTop : 0;
                 // set top spacer
                 if (this.fixedBlockHeight) {
                     this.offsetTop = lo >= 0 ? lo * this.fixedBlockHeight : 0;
                 } else {
-                    this.offsetTop = lo >= 0 ? heightArr[lo] - vlOffset : 0;
+                    this.offsetTop = lo >= 0 ? heightArr[lo] - vbOffset : 0;
                 }
                 // set bot spacer
                 if (this.fixedBlockHeight) {
@@ -473,9 +473,9 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-54c2af52\",\"hasScoped\":false,\"optionsId\":\"1\",\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/VirtualBlock.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-778963e1\",\"hasScoped\":false,\"optionsId\":\"0\",\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/VirtualBlock.vue":
 /*!***********************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-54c2af52","hasScoped":false,"optionsId":"1","buble":{"transforms":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/VirtualBlock.vue ***!
+  !*** ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-778963e1","hasScoped":false,"optionsId":"0","buble":{"transforms":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/VirtualBlock.vue ***!
   \***********************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -484,7 +484,7 @@ function normalizeComponent (
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',_vm._g({ref:"vl",style:(_vm.containerStyle)},_vm.pageMode ? {} : {scroll: _vm.handleScroll}),[_c('div',{style:({height: (_vm.offsetTop + "px")})}),_vm._v(" "),_vm._l((_vm.renderList),function(item){return _c('div',{key:("" + (item.id)),style:({height: ((_vm.fixedBlockHeight ? _vm.fixedBlockHeight : item.height) + "px")})},[_vm._t("default",null,{data:item})],2)}),_vm._v(" "),_c('div',{style:({height: (_vm.offsetBot + "px")})})],2)}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',_vm._g({ref:"vb",style:(_vm.containerStyle)},_vm.pageMode ? {} : {scroll: _vm.handleScroll}),[_c('div',{style:({height: (_vm.offsetTop + "px")})}),_vm._v(" "),_vm._l((_vm.renderList),function(item){return _c('div',{key:("" + (item.id)),style:({height: ((_vm.fixedBlockHeight ? _vm.fixedBlockHeight : item.height) + "px")})},[_vm._t("default",null,{data:item})],2)}),_vm._v(" "),_c('div',{style:({height: (_vm.offsetBot + "px")})})],2)}
 var staticRenderFns = []
 
 
@@ -502,7 +502,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !babel-loader!../node_modules/vue-loader/lib/selector?type=script&index=0!./VirtualBlock.vue */ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./src/VirtualBlock.vue");
 /* harmony import */ var _babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_template_compiler_index_id_data_v_54c2af52_hasScoped_false_optionsId_1_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../node_modules/vue-loader/lib/template-compiler/index?{"id":"data-v-54c2af52","hasScoped":false,"optionsId":"1","buble":{"transforms":{}}}!../node_modules/vue-loader/lib/selector?type=template&index=0!./VirtualBlock.vue */ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-54c2af52\",\"hasScoped\":false,\"optionsId\":\"1\",\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/VirtualBlock.vue");
+/* harmony import */ var _node_modules_vue_loader_lib_template_compiler_index_id_data_v_778963e1_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../node_modules/vue-loader/lib/template-compiler/index?{"id":"data-v-778963e1","hasScoped":false,"optionsId":"0","buble":{"transforms":{}}}!../node_modules/vue-loader/lib/selector?type=template&index=0!./VirtualBlock.vue */ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-778963e1\",\"hasScoped\":false,\"optionsId\":\"0\",\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/VirtualBlock.vue");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_component_normalizer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/component-normalizer */ "./node_modules/vue-loader/lib/runtime/component-normalizer.js");
 /* script */
 
@@ -520,8 +520,8 @@ var __vue_module_identifier__ = null
 
 var Component = Object(_node_modules_vue_loader_lib_runtime_component_normalizer__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_0___default.a,
-  _node_modules_vue_loader_lib_template_compiler_index_id_data_v_54c2af52_hasScoped_false_optionsId_1_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_1__["render"],
-  _node_modules_vue_loader_lib_template_compiler_index_id_data_v_54c2af52_hasScoped_false_optionsId_1_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_1__["staticRenderFns"],
+  _node_modules_vue_loader_lib_template_compiler_index_id_data_v_778963e1_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_1__["render"],
+  _node_modules_vue_loader_lib_template_compiler_index_id_data_v_778963e1_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_VirtualBlock_vue__WEBPACK_IMPORTED_MODULE_1__["staticRenderFns"],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,

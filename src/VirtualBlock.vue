@@ -1,5 +1,5 @@
 <template>
-    <div v-on="pageMode ? {} : {scroll: handleScroll}" :style="containerStyle" ref="vl">
+    <div v-on="pageMode ? {} : {scroll: handleScroll}" :style="containerStyle" ref="vb">
         <div :style="{height: `${offsetTop}px`}">
         </div>
         <div v-for="item in renderList" 
@@ -55,7 +55,7 @@ export default {
                         () => {
                             // reset the scrollTop for container
                             // update view by handleScroll()
-                            this.$refs.vl.scrollTop = 0;
+                            this.$refs.vb.scrollTop = 0;
                             this.handleScroll();
                         }
                     );
@@ -75,7 +75,7 @@ export default {
                 () => {
                     // reset the scrollTop for container
                     // update view by handleScroll()
-                    this.$refs.vl.scrollTop = 0;
+                    this.$refs.vb.scrollTop = 0;
                     this.handleScroll()
                 }
             );
@@ -109,8 +109,8 @@ export default {
             // compute accumulative height value for each block
             // note the function related to the variable 'pageMode'
             // and when fixedRowHeight is specified, transformedData is not needed
-            if (!this.fixedRowHeight && ((this.pageMode && this.$refs.vl) || !this.pageMode)) {
-                let curHeight = this.pageMode ? this.$refs.vl.offsetTop : 0;
+            if (!this.fixedRowHeight && ((this.pageMode && this.$refs.vb) || !this.pageMode)) {
+                let curHeight = this.pageMode ? this.$refs.vb.offsetTop : 0;
                 let rt = [curHeight];
                 oriArr.forEach(
                     item => {
@@ -123,7 +123,7 @@ export default {
         },
         handleScroll() {
             // scrollTop is relative to the varible pageMode
-            const scrollTop = this.pageMode ? window.pageYOffset : this.$refs.vl.scrollTop;
+            const scrollTop = this.pageMode ? window.pageYOffset : this.$refs.vb.scrollTop;
             // use requestAnimationFrame to ensure smooth scrolling visual effects
             window.requestAnimationFrame(
                 () => {
@@ -205,14 +205,14 @@ export default {
         fixedBlockHeightLowerBound(s, fixedBlockHeight) {
             // used to compute the lower bound in-viewport index for data array
             // when in fixed height mode
-            const sAdjusted = this.pageMode ? s - this.$refs.vl.offsetTop : s;
+            const sAdjusted = this.pageMode ? s - this.$refs.vb.offsetTop : s;
             const computedStartIndex = ~~(sAdjusted / fixedBlockHeight);
             return computedStartIndex >= 0 ? computedStartIndex : 0;
         },
         fixedBlockHeightUpperBound(e, fixedBlockHeight) {
             // used to compute the upper bound in-viewport index for data array
             // when in fixed height mode
-            const eAdjusted = this.pageMode ? e - this.$refs.vl.offsetTop : e;
+            const eAdjusted = this.pageMode ? e - this.$refs.vb.offsetTop : e;
             const compuedEndIndex = Math.ceil(eAdjusted / fixedBlockHeight);
             return compuedEndIndex <= this.data.length ? compuedEndIndex : this.data.length;
         },
@@ -225,12 +225,12 @@ export default {
                            this.fixedBlockHeightUpperBound(e, this.fixedBlockHeight) :
                            this.binarySearchUpperBound(e, heightArr);
 
-                var vlOffset = this.pageMode ? this.$refs.vl.offsetTop : 0;
+                var vbOffset = this.pageMode ? this.$refs.vb.offsetTop : 0;
                 // set top spacer
                 if(this.fixedBlockHeight) {
                     this.offsetTop = lo >= 0 ? lo * this.fixedBlockHeight : 0;
                 } else {
-                    this.offsetTop = lo >= 0 ? heightArr[lo] - vlOffset : 0;
+                    this.offsetTop = lo >= 0 ? heightArr[lo] - vbOffset : 0;
                 }
                 // set bot spacer
                 if (this.fixedBlockHeight) {
