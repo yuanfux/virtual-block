@@ -3,7 +3,7 @@
 
 > 🌈Render what's visible
 
-[Demo](http://jasonfuyuan.com/virtual-block/)
+[Demo](https://yuanfux.github.io/virtual-block/)
 
 ## Install
 ```
